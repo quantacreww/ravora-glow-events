@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { Instagram, MessageCircle } from "lucide-react";
-import BookingModal from "./BookingModal";
 
 const ContactSection = () => {
   const ref = useRef(null);
@@ -25,7 +24,7 @@ const ContactSection = () => {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-12">
             <motion.a
-              href="https://instagram.com"
+              href="https://instagram.com/ravora_events"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
@@ -36,7 +35,7 @@ const ContactSection = () => {
             </motion.a>
 
             <motion.a
-              href="https://wa.me/1234567890"
+              href="https://wa.me/9618414997"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
