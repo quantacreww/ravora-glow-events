@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import NumberStepper from "@/components/NumberStepper";
 
 type Split = { pkg1: number; pkg2: number };
 
@@ -18,8 +19,6 @@ const Book = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
   const [people, setPeople] = useState<number>(2);
   const [split, setSplit] = useState<Split>({ pkg1: 2, pkg2: 0 });
   const [notes, setNotes] = useState("");
@@ -44,30 +43,19 @@ const Book = () => {
 
   const canSubmit = useMemo(() => {
     return (
-      name.trim() && email.trim() && phone.trim() && date && time && people > 0 &&
+      name.trim() && email.trim() && phone.trim() && people > 0 &&
       normalizedSplit.pkg1 + normalizedSplit.pkg2 === people
     );
-  }, [name, email, phone, date, time, people, normalizedSplit]);
+  }, [name, email, phone, people, normalizedSplit]);
 
   const handleProceedToPay = async () => {
     // Placeholder Razorpay integration: create order on backend then open checkout
     // Here we only navigate to a mock payment route with state or query params
-    const details = {
-      name,
-      email,
-      phone,
-      date,
-      time,
-      people,
-      split: normalizedSplit,
-      amount: totalAmount,
-    };
+    const details = { name, email, phone, people, split: normalizedSplit, amount: totalAmount };
     const params = new URLSearchParams({
       name: details.name,
       email: details.email,
       phone: details.phone,
-      date: details.date,
-      time: details.time,
       people: String(details.people),
       p1: String(details.split.pkg1),
       p2: String(details.split.pkg2),
@@ -90,9 +78,7 @@ const Book = () => {
             Book Now
           </motion.h1>
 
-          <p className="text-center text-muted-foreground mb-10">
-            Choose packages for your group and share your details. We’ll hold your reservation and direct you to payment.
-          </p>
+          <p className="text-center text-muted-foreground mb-10">Choose packages for your group and share your details. We’ll direct you to secure payment.</p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Form */}
@@ -112,50 +98,36 @@ const Book = () => {
                       <Label htmlFor="email">Email</Label>
                       <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="john@example.com" required />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="date">Date</Label>
-                        <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
-                      </div>
-                      <div>
-                        <Label htmlFor="time">Time</Label>
-                        <Input id="time" type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
-                      </div>
-                    </div>
+                    {/* Date & Time removed per request */}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                     <div>
                       <Label htmlFor="people">Total People</Label>
-                      <Input
-                        id="people"
-                        type="number"
-                        min={1}
-                        value={people}
-                        onChange={(e) => setPeople(clamp(parseInt(e.target.value || "0", 10), 1))}
-                      />
+                      <NumberStepper id="people" value={people} min={1} onChange={(v) => setPeople(clamp(v, 1))} />
                     </div>
                     <div>
                       <Label htmlFor="pkg1">{PACKAGE_OPTIONS[0].name.split(" — ")[0]}</Label>
-                      <Input
+                      <NumberStepper
                         id="pkg1"
-                        type="number"
-                        min={0}
                         value={normalizedSplit.pkg1}
-                        onChange={(e) => setSplit((s) => ({ ...s, pkg1: clamp(parseInt(e.target.value || "0", 10), 0) }))}
+                        min={0}
+                        max={people - normalizedSplit.pkg2}
+                        onChange={(v) => setSplit((s) => ({ ...s, pkg1: clamp(v, 0) }))}
                       />
                     </div>
                     <div>
                       <Label htmlFor="pkg2">{PACKAGE_OPTIONS[1].name.split(" — ")[0]}</Label>
-                      <Input
+                      <NumberStepper
                         id="pkg2"
-                        type="number"
-                        min={0}
                         value={normalizedSplit.pkg2}
-                        onChange={(e) => setSplit((s) => ({ ...s, pkg2: clamp(parseInt(e.target.value || "0", 10), 0) }))}
+                        min={0}
+                        max={people - normalizedSplit.pkg1}
+                        onChange={(v) => setSplit((s) => ({ ...s, pkg2: clamp(v, 0) }))}
                       />
                     </div>
                   </div>
+                  <p className="text-xs text-muted-foreground -mt-2">Remaining: {Math.max(people - (normalizedSplit.pkg1 + normalizedSplit.pkg2), 0)}</p>
 
                   <div>
                     <Label htmlFor="notes">Notes (optional)</Label>
@@ -167,35 +139,44 @@ const Book = () => {
 
             {/* Summary */}
             <div>
-              <Card>
+              <Card className="sticky top-28">
                 <CardContent className="p-6 space-y-4">
-                  <h3 className="text-xl font-semibold">Summary</h3>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <div>Date: {date || "—"}</div>
-                    <div>Time: {time || "—"}</div>
-                    <div>People: {people}</div>
-                    <div>Split: {normalizedSplit.pkg1} in Option 1, {normalizedSplit.pkg2} in Option 2</div>
+                  <h3 className="text-xl font-semibold">Order Summary</h3>
+                  <div className="text-sm text-muted-foreground">Contact: {name || "—"} · {phone || "—"}</div>
+
+                  <div className="border border-border rounded-md divide-y divide-border overflow-hidden">
+                    {/* Line Item: Non‑Alcohol */}
+                    <div className="flex items-start justify-between p-4">
+                      <div>
+                        <div className="font-medium">{PACKAGE_OPTIONS[0].name.split(" — ")[0]}</div>
+                        <div className="text-xs text-muted-foreground">₹{PACKAGE_OPTIONS[0].pricePerPerson} × {normalizedSplit.pkg1}</div>
+                      </div>
+                      <div className="font-semibold">₹{PACKAGE_OPTIONS[0].pricePerPerson * normalizedSplit.pkg1}</div>
+                    </div>
+                    {/* Line Item: Alcohol */}
+                    <div className="flex items-start justify-between p-4">
+                      <div>
+                        <div className="font-medium">{PACKAGE_OPTIONS[1].name.split(" — ")[0]}</div>
+                        <div className="text-xs text-muted-foreground">₹{PACKAGE_OPTIONS[1].pricePerPerson} × {normalizedSplit.pkg2}</div>
+                      </div>
+                      <div className="font-semibold">₹{PACKAGE_OPTIONS[1].pricePerPerson * normalizedSplit.pkg2}</div>
+                    </div>
+                    {/* Subtotal / Total */}
+                    <div className="flex items-center justify-between p-4 bg-muted/20">
+                      <div className="text-sm">Subtotal</div>
+                      <div className="font-medium">₹{totalAmount}</div>
+                    </div>
                   </div>
-                  <div className="border-t border-border pt-3">
-                    <div className="flex items-center justify-between text-sm mb-1">
-                      <span>{PACKAGE_OPTIONS[0].name}</span>
-                      <span>₹{PACKAGE_OPTIONS[0].pricePerPerson} × {normalizedSplit.pkg1}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span>{PACKAGE_OPTIONS[1].name}</span>
-                      <span>₹{PACKAGE_OPTIONS[1].pricePerPerson} × {normalizedSplit.pkg2}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-lg font-semibold mt-2">
-                      <span>Total</span>
-                      <span>₹{totalAmount}</span>
-                    </div>
+
+                  <div className="flex items-center justify-between text-lg font-semibold">
+                    <span>You Pay</span>
+                    <span>₹{totalAmount}</span>
                   </div>
+
                   <Button className="w-full" disabled={!canSubmit} onClick={handleProceedToPay}>
                     Proceed to Payment
                   </Button>
-                  <p className="text-xs text-muted-foreground">
-                    You will be redirected to the payment screen. Pricing includes applicable taxes where required.
-                  </p>
+                  <p className="text-xs text-muted-foreground">Unlimited packages. Taxes may apply as per venue policy.</p>
                 </CardContent>
               </Card>
             </div>

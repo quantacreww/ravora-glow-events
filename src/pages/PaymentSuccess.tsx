@@ -55,7 +55,7 @@ const PaymentSuccess = () => {
             <CardContent className="p-6 space-y-4">
               <h1 className="text-2xl font-bold">Payment Successful 🎉</h1>
               <p className="text-muted-foreground text-sm">
-                Your booking for {info.date} at {info.time} is confirmed.
+                Your booking is confirmed.
               </p>
               <div className="flex items-center justify-between">
                 <span>Total Paid</span>

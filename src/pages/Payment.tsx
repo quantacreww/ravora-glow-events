@@ -47,7 +47,7 @@ const Payment = () => {
             <CardContent className="p-6 space-y-4">
               <h1 className="text-2xl font-bold">Payment</h1>
               <p className="text-muted-foreground text-sm">
-                You are paying for a booking on {details.date} at {details.time} for {details.people} people.
+                You are paying for a booking for {details.people} people.
               </p>
               <div className="flex items-center justify-between">
                 <span>Total Amount</span>
