@@ -53,12 +53,12 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <a
-              href="#book-now"
+            <Link
+              to="/book"
               className="px-6 py-2 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold glow-pink hover:scale-105 transition-transform"
             >
               Book Now
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -92,13 +92,13 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            <a
-              href="#book-now"
+            <Link
+              to="/book"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block mt-4 px-6 py-3 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-center"
             >
               Book Now
-            </a>
+            </Link>
           </motion.div>
         )}
       </div>
