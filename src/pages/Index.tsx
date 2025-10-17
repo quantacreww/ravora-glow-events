@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { pageTransition } from "@/lib/motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import HowItWorks from "@/components/HowItWorks";
 import AboutSection from "@/components/AboutSection";
 import CategoriesSection from "@/components/CategoriesSection";
 import EventsSection from "@/components/EventsSection";
@@ -13,6 +14,7 @@ const Index = () => {
     <motion.div {...pageTransition}>
       <Navbar />
       <HeroSection />
+  <HowItWorks />
       <AboutSection />
   <CategoriesSection />
       <EventsSection />
