@@ -17,8 +17,8 @@ const Menu = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-6"
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-gradient-primary">Package Options</h1>
-            <p className="text-muted-foreground mt-2">Premium nightlife packages curated for your crew</p>
+            <h1 className="text-5xl md:text-6xl font-bold text-gradient-primary">Alcohol & Non‑Alcohol Packages</h1>
+            <p className="text-muted-foreground mt-2">Choose between Alcohol (₹2399) and Non‑Alcohol (₹1599) unlimited packages</p>
           </motion.div>
           <PackageOptions />
         </div>

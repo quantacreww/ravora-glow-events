@@ -10,9 +10,8 @@ export type PackageOption = {
 export const PACKAGE_OPTIONS: PackageOption[] = [
   {
     id: "opt1",
-    name: "Option 1 — ₹1599 + tax (Unlimited)",
-    description:
-      "Unlimited mocktails & soft drinks with a hearty food spread.",
+    name: "Non-Alcohol — ₹1599 + tax (Unlimited)",
+    description: "Unlimited mocktails & soft drinks with a hearty food spread.",
     pricePerPerson: 1599,
     includes: [
       "Unlimited Mocktails & Soft Drinks",
@@ -25,7 +24,7 @@ export const PACKAGE_OPTIONS: PackageOption[] = [
   },
   {
     id: "opt3",
-    name: "Option 3 — ₹2399 + tax (Unlimited)",
+    name: "Alcohol — ₹2399 + tax (Unlimited)",
     description:
       "Unlimited select premium spirits, cocktails, mocktails, and soft drinks with a premium food spread.",
     pricePerPerson: 2399,

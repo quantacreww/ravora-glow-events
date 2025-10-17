@@ -136,7 +136,7 @@ const Book = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="pkg1">Option 1 — Signature</Label>
+                      <Label htmlFor="pkg1">{PACKAGE_OPTIONS[0].name.split(" — ")[0]}</Label>
                       <Input
                         id="pkg1"
                         type="number"
@@ -146,7 +146,7 @@ const Book = () => {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="pkg2">Option 2 — Premium</Label>
+                      <Label htmlFor="pkg2">{PACKAGE_OPTIONS[1].name.split(" — ")[0]}</Label>
                       <Input
                         id="pkg2"
                         type="number"

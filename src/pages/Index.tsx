@@ -3,6 +3,7 @@ import { pageTransition } from "@/lib/motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
+import CategoriesSection from "@/components/CategoriesSection";
 import EventsSection from "@/components/EventsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -13,6 +14,7 @@ const Index = () => {
       <Navbar />
       <HeroSection />
       <AboutSection />
+  <CategoriesSection />
       <EventsSection />
       <ContactSection />
       <Footer />
