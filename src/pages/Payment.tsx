@@ -1,19 +1,23 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { pageTransition } from "@/lib/motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import RazorpayButton from "@/components/RazorpayButton";
 
-declare global {
-  interface Window {
-    Razorpay?: any;
+function errorToString(e: unknown): string {
+  if (e instanceof Error) return e.message;
+  if (typeof e === "object" && e && "message" in e) {
+    const m = (e as { message?: unknown }).message;
+    return typeof m === "string" ? m : String(m);
   }
+  return String(e);
 }
 
 const Payment = () => {
-  const params = new URLSearchParams(window.location.search);
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
   const amount = Number(params.get("amount") || 0);
   const details = useMemo(() => ({
     name: params.get("name") || "",
@@ -24,47 +28,15 @@ const Payment = () => {
     people: Number(params.get("people") || 0),
     p1: Number(params.get("p1") || 0),
     p2: Number(params.get("p2") || 0),
-  }), [params.toString()]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [search]);
 
-  useEffect(() => {
-    // Optionally preload Razorpay script here for faster checkout
-    // const script = document.createElement('script');
-    // script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-    // script.async = true;
-    // document.body.appendChild(script);
-    // return () => { document.body.removeChild(script); };
-  }, []);
-
-  const handlePay = async () => {
-    // In production: call backend to create an order and get order_id
-    // Example POST /api/create-order { amount }
-    // const { orderId } = await fetch('/api/create-order', { method:'POST', body: JSON.stringify({ amount })}).then(r=>r.json());
-
-    const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID, // set in .env
-      amount: amount * 100, // paise
-      currency: "INR",
-      name: "Ravora Events",
-      description: `Booking for ${details.people} (${details.p1} + ${details.p2})`,
-      // order_id: orderId,
-      prefill: { name: details.name, email: details.email, contact: details.phone },
-      notes: { date: details.date, time: details.time },
-      theme: { color: "#14b8a6" },
-      handler: function () {
-        // On success you can navigate to a confirmation page
-        window.location.href = "/?payment=success";
-      },
-    };
-
-    if (!window.Razorpay) {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.onload = () => new window.Razorpay(options).open();
-      document.body.appendChild(script);
-    } else {
-      new window.Razorpay(options).open();
-    }
-  };
+  const notes = useMemo(() => ({
+    date: details.date,
+    time: details.time,
+    p1: details.p1,
+    p2: details.p2,
+  }), [details.date, details.time, details.p1, details.p2]);
 
   return (
     <motion.div {...pageTransition}>
@@ -81,7 +53,39 @@ const Payment = () => {
                 <span>Total Amount</span>
                 <span className="text-xl font-semibold">₹{amount}</span>
               </div>
-              <Button onClick={handlePay} className="w-full">Pay with Razorpay</Button>
+              <RazorpayButton
+                amount={amount}
+                className="w-full"
+                prefill={{ name: details.name, email: details.email, contact: details.phone }}
+                notes={notes}
+                onSuccess={(ok, payload) => {
+                  if (ok) {
+                    const pr = payload?.paymentResponse as {
+                      razorpay_order_id?: string;
+                      razorpay_payment_id?: string;
+                    };
+                    const successParams = new URLSearchParams({
+                      amount: String(amount),
+                      name: details.name,
+                      email: details.email,
+                      phone: details.phone,
+                      date: details.date,
+                      time: details.time,
+                      people: String(details.people),
+                      p1: String(details.p1),
+                      p2: String(details.p2),
+                      order_id: pr?.razorpay_order_id || "",
+                      payment_id: pr?.razorpay_payment_id || "",
+                    });
+                    window.location.href = `/payment/success?${successParams.toString()}`;
+                  } else {
+                    alert("Payment verification failed");
+                  }
+                }}
+                onError={(e) => {
+                  alert(`Payment error: ${errorToString(e)}`);
+                }}
+              />
               <p className="text-xs text-muted-foreground">
                 This is a test integration. In production, orders must be created server-side and validated via webhook.
               </p>

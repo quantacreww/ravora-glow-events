@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { fadeIn, fadeInScale } from "@/lib/motion";
 import heroImage from "@/assets/hero-fallback.jpg";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.jpg";
 
 const HeroSection = () => {
   return (
@@ -19,7 +19,7 @@ const HeroSection = () => {
         <motion.img
           src={logo}
           alt="Ravora Logo"
-          className="w-32 h-32 mx-auto mb-8 animate-float glow-pink"
+          className="w-64 h-64 mx-auto mb-8 animate-float"
           {...fadeInScale}
           transition={{ duration: 0.8 }}
         />

@@ -60,6 +60,27 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## Payments (Razorpay)
+
+This app integrates Razorpay Checkout on the frontend. To enable it:
+
+1. Create a `.env` file in the project root with:
+
+```
+VITE_RAZORPAY_KEY_ID=rzp_test_123456
+# Optional if your backend is on a different origin
+# VITE_API_BASE_URL=http://localhost:3000
+```
+
+2. Implement backend endpoints:
+
+- POST `/api/razorpay/order` -> returns `{ orderId, amount, currency }`
+- POST `/api/razorpay/verify` -> returns `{ valid: boolean }`
+
+3. Use the Payment page (`/payment`) which invokes Razorpay via `RazorpayButton`.
+
+Frontend utilities are in `src/lib/razorpay.ts` and the reusable button is `src/components/RazorpayButton.tsx`.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/c7116d7b-2bbf-4cad-9685-92b4c8d09b2e) and click on Share -> Publish.

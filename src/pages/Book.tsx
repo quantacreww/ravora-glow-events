@@ -26,7 +26,7 @@ const Book = () => {
 
   // Ensure split sums to people
   const normalizedSplit = useMemo(() => {
-    let p1 = clamp(Math.round(split.pkg1));
+    const p1 = clamp(Math.round(split.pkg1));
     let p2 = clamp(Math.round(split.pkg2));
     const total = p1 + p2;
     if (total !== people) {

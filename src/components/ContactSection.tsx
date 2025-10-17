@@ -7,7 +7,6 @@ import BookingModal from "./BookingModal";
 const ContactSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
     <section id="book-now" ref={ref} className="py-20 px-4 sm:px-6 lg:px-8">
@@ -48,17 +47,16 @@ const ContactSection = () => {
             </motion.a>
           </div>
 
-          <motion.button
-            onClick={() => setIsBookingOpen(true)}
-            whileHover={{ scale: 1.05 }}
-            className="px-12 py-5 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-xl glow-pink"
-          >
-            🎉 Book Your Spot Now 🎉
-          </motion.button>
+            <motion.a
+              href="/book"
+              whileHover={{ scale: 1.05 }}
+              className="px-12 py-5 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-xl glow-pink inline-flex items-center justify-center"
+            >
+              🎉 Book Your Spot Now 🎉
+            </motion.a>
         </motion.div>
       </div>
 
-      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </section>
   );
 };
