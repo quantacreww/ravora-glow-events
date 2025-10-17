@@ -14,10 +14,10 @@ const Index = () => {
     <motion.div {...pageTransition}>
       <Navbar />
       <HeroSection />
-  <HowItWorks />
       <AboutSection />
-  <CategoriesSection />
+      <CategoriesSection />
       <EventsSection />
+      <HowItWorks />
       <ContactSection />
       <Footer />
     </motion.div>

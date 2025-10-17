@@ -32,8 +32,8 @@ export default function HowItWorks() {
         <div className="absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-accent blur-3xl" />
       </div>
 
-      <h2 className="text-4xl md:text-5xl font-bold text-center text-gradient-primary mb-2">How It Works</h2>
-      <p className="text-center text-muted-foreground mb-10">Book your Ravora experience in three simple steps ✨</p>
+  <h2 className="text-4xl md:text-5xl font-bold text-center text-gradient-primary mb-2">Plan Your Night</h2>
+  <p className="text-center text-muted-foreground mb-10">Lock in your table, settle payments, and party on—quick and easy 🍸</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {steps.map((s, i) => (
@@ -45,7 +45,7 @@ export default function HowItWorks() {
             transition={{ duration: 0.5, delay: i * 0.05 }}
             whileHover={{ y: -5 }}
           >
-            <Card className="h-full border-border hover:shadow-glow-primary transition">
+            <Card className="h-full border-border hover:glow-pink hover:border-primary transition-shadow transition-transform">
               <CardContent className="p-6 flex flex-col items-center text-center gap-3">
                 <div className="h-14 w-14 rounded-full bg-gradient-to-br from-[hsl(var(--primary))] to-[hsl(var(--accent))] grid place-items-center">
                   <s.Icon className="h-7 w-7 text-white" />
