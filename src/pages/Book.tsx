@@ -45,7 +45,7 @@ const Book = () => {
 
   const canSubmit = useMemo(() => {
     return (
-      name.trim() && email.trim() && phone.trim() && date && time && people > 0 &&
+      name.trim() && email.trim() && phone.trim() && people > 0 &&
       normalizedSplit.pkg1 + normalizedSplit.pkg2 === people
     );
   }, [name, email, phone, date, time, people, normalizedSplit]);
@@ -113,7 +113,7 @@ const Book = () => {
                       <Label htmlFor="email">Email</Label>
                       <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="john@example.com" required />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
+                    {/* <div className="grid grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="date">Date</Label>
                         <Input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required />
@@ -122,7 +122,7 @@ const Book = () => {
                         <Label htmlFor="time">Time</Label>
                         <Input id="time" type="time" value={time} onChange={(e) => setTime(e.target.value)} required />
                       </div>
-                    </div>
+                    </div> */}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
