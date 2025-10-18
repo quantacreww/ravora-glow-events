@@ -46,13 +46,13 @@ const ContactSection = () => {
             </motion.a>
           </div>
 
-            <motion.a
-              href="/book"
-              whileHover={{ scale: 1.05 }}
-              className="px-12 py-5 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-xl glow-pink inline-flex items-center justify-center"
-            >
-              🎉 Book Your Spot Now 🎉
-            </motion.a>
+          <motion.a
+            href="/book"
+            whileHover={{ scale: 1.05 }}
+            className="px-12 py-5 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-xl glow-pink inline-flex items-center justify-center"
+          >
+            🎉 Book Your Spot Now 🎉
+          </motion.a>
         </motion.div>
       </div>
 
