@@ -22,19 +22,20 @@ const Book = () => {
   const [time, setTime] = useState("");
   const [people, setPeople] = useState<number>(2);
   const [split, setSplit] = useState<Split>({ pkg1: 2, pkg2: 0 });
+  const [lastEdited, setLastEdited] = useState<"pkg1" | "pkg2">("pkg1");
   const [notes, setNotes] = useState("");
 
   // Ensure split sums to people
   const normalizedSplit = useMemo(() => {
-    const p1 = clamp(Math.round(split.pkg1));
-    let p2 = clamp(Math.round(split.pkg2));
-    const total = p1 + p2;
-    if (total !== people) {
-      // adjust pkg2 to match total people
-      p2 = clamp(people - p1, 0);
+    let p1 = clamp(Math.round(split.pkg1), 0, people);
+    let p2 = clamp(Math.round(split.pkg2), 0, people);
+    if (lastEdited === "pkg1") {
+      p2 = clamp(people - p1, 0, people);
+    } else {
+      p1 = clamp(people - p2, 0, people);
     }
     return { pkg1: p1, pkg2: p2 } as Split;
-  }, [split, people]);
+  }, [split, people, lastEdited]);
 
   const totalAmount = useMemo(() => {
     const price1 = PACKAGE_OPTIONS[0].pricePerPerson * normalizedSplit.pkg1;
@@ -141,8 +142,13 @@ const Book = () => {
                         id="pkg1"
                         type="number"
                         min={0}
+                        max={people}
                         value={normalizedSplit.pkg1}
-                        onChange={(e) => setSplit((s) => ({ ...s, pkg1: clamp(parseInt(e.target.value || "0", 10), 0) }))}
+                        onChange={(e) => {
+                          setLastEdited("pkg1");
+                          const val = clamp(parseInt(e.target.value || "0", 10), 0, people);
+                          setSplit((s) => ({ ...s, pkg1: val }));
+                        }}
                       />
                     </div>
                     <div>
@@ -151,8 +157,13 @@ const Book = () => {
                         id="pkg2"
                         type="number"
                         min={0}
+                        max={people}
                         value={normalizedSplit.pkg2}
-                        onChange={(e) => setSplit((s) => ({ ...s, pkg2: clamp(parseInt(e.target.value || "0", 10), 0) }))}
+                        onChange={(e) => {
+                          setLastEdited("pkg2");
+                          const val = clamp(parseInt(e.target.value || "0", 10), 0, people);
+                          setSplit((s) => ({ ...s, pkg2: val }));
+                        }}
                       />
                     </div>
                   </div>
