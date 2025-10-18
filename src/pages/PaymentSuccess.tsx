@@ -73,7 +73,10 @@ const PaymentSuccess = () => {
                             </div>
                             <div className="flex gap-2 pt-2">
                                 <Button onClick={() => window.print()} variant="secondary">Print</Button>
-                                <Button onClick={() => (window.location.href = "/")}>Go to Home</Button>
+                                <Button onClick={() => (window.location.href = `/ticket?orderId=${encodeURIComponent(info.orderId)}&paymentId=${encodeURIComponent(info.paymentId)}`)}>
+                                    View Ticket (QR)
+                                </Button>
+                                <Button onClick={() => (window.location.href = "/")} variant="ghost">Go to Home</Button>
                             </div>
                         </CardContent>
                     </Card>
