@@ -38,18 +38,6 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Policies */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4">Policies</h4>
-            <ul className="space-y-2">
-              <li><a href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
-              <li><a href="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms & Conditions</a></li>
-              <li><a href="/refunds" className="text-muted-foreground hover:text-primary transition-colors">Cancellation & Refunds</a></li>
-              <li><a href="/shipping" className="text-muted-foreground hover:text-primary transition-colors">Shipping & Delivery</a></li>
-              <li><a href="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact Us</a></li>
-            </ul>
-          </div>
-
           {/* Contact */}
           <div>
             <h4 className="text-lg font-semibold mb-4">Connect With Us</h4>
