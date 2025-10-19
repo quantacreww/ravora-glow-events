@@ -12,7 +12,7 @@ export const PACKAGE_OPTIONS: PackageOption[] = [
     id: "opt1",
     name: "Non-Alcohol — ₹1599 + tax (Unlimited)",
     description: "Unlimited mocktails & soft drinks with a hearty food spread.",
-    pricePerPerson: 50,
+    pricePerPerson: 1599,
     includes: [
       "Unlimited Mocktails & Soft Drinks",
       "3 Veg Snacks & 3 Non-Veg Snacks",
@@ -27,7 +27,7 @@ export const PACKAGE_OPTIONS: PackageOption[] = [
     name: "Alcohol — ₹2399 + tax (Unlimited)",
     description:
       "Unlimited select premium spirits, cocktails, mocktails, and soft drinks with a premium food spread.",
-    pricePerPerson: 100,
+    pricePerPerson: 2399,
     includes: [
       "Unlimited 100 Pipers, Teacher’s Highland, Black & White, Absolut",
       "Bacardi Rum, Dark Rum, Brandy, KF Draught, KF Ultra",
