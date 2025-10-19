@@ -79,7 +79,7 @@ export default function PaymentSuccess() {
                     </p>
                 </div>
 
-                <Button onClick={downloadTicket} className="mt-6 bg-green-600 hover:bg-green-700">
+                        <Button onClick={downloadTicket} className="mt-6 bg-green-600 hover:bg-green-700 animate-glow-pulse">
                     Download Ticket
                 </Button>
             </main>
