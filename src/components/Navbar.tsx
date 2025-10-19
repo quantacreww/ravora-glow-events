@@ -26,9 +26,8 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "glass glow-pink" : "bg-transparent"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "glass glow-pink" : "bg-transparent"
+        }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -44,11 +43,10 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-lg font-medium transition-all duration-300 hover:text-primary ${
-                  location.pathname === link.path
+                className={`text-lg font-medium transition-all duration-300 hover:text-primary ${location.pathname === link.path
                     ? "text-primary text-glow-pink"
                     : "text-foreground"
-                }`}
+                  }`}
               >
                 {link.name}
               </Link>
@@ -83,11 +81,10 @@ const Navbar = () => {
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`block py-3 text-lg font-medium ${
-                  location.pathname === link.path
+                className={`block py-3 text-lg font-medium ${location.pathname === link.path
                     ? "text-primary"
                     : "text-foreground"
-                }`}
+                  }`}
               >
                 {link.name}
               </Link>

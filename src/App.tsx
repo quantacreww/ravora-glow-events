@@ -7,6 +7,7 @@ import Menu from "./pages/Menu";
 import Book from "./pages/Book";
 import Payment from "./pages/Payment";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import Ticket from "./pages/Ticket";
 import NotFound from "./pages/NotFound";
 import BookingVerifyPage from "./pages/BookingVerifyPage";
 import AdminLoginPage from "./pages/AdminLogin";
@@ -16,7 +17,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-  <Toaster />
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

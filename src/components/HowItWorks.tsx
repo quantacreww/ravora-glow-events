@@ -32,8 +32,8 @@ export default function HowItWorks() {
         <div className="absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-accent blur-3xl" />
       </div>
 
-  <h2 className="text-4xl md:text-5xl font-bold text-center text-gradient-primary mb-2">Plan Your Night</h2>
-  <p className="text-center text-muted-foreground mb-10">Lock in your table, settle payments, and party on—quick and easy 🍸</p>
+      <h2 className="text-4xl md:text-5xl font-bold text-center text-gradient-primary mb-2">Plan Your Night</h2>
+      <p className="text-center text-muted-foreground mb-10">Lock in your table, settle payments, and party on—quick and easy 🍸</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {steps.map((s, i) => (

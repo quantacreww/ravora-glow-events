@@ -22,6 +22,8 @@ const Book = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
   const [people, setPeople] = useState<number>(2);
   const [split, setSplit] = useState<Split>({ pkg1: 1, pkg2: 1 });
   const [notes, setNotes] = useState("");
@@ -49,7 +51,7 @@ const Book = () => {
       people > 0 &&
       normalizedSplit.pkg1 + normalizedSplit.pkg2 === people
     );
-  }, [name, email, phone, people, normalizedSplit]);
+  }, [name, email, phone, date, time, people, normalizedSplit]);
 
   // ✅ Proceed button: send booking data to backend
  // ✅ Proceed button: send booking data to backend
@@ -171,8 +173,11 @@ const handleProceedToPay = async () => {
                     </div>
                     <div>
                       <Label htmlFor="pkg1">{PACKAGE_OPTIONS[0].name.split(" — ")[0]}</Label>
-                      <NumberStepper
+                      <Input
                         id="pkg1"
+                        type="number"
+                        min={0}
+                        max={people}
                         value={normalizedSplit.pkg1}
                         min={0}
                         max={people}
@@ -181,8 +186,11 @@ const handleProceedToPay = async () => {
                     </div>
                     <div>
                       <Label htmlFor="pkg2">{PACKAGE_OPTIONS[1].name.split(" — ")[0]}</Label>
-                      <NumberStepper
+                      <Input
                         id="pkg2"
+                        type="number"
+                        min={0}
+                        max={people}
                         value={normalizedSplit.pkg2}
                         min={0}
                         max={people}
@@ -207,7 +215,7 @@ const handleProceedToPay = async () => {
 
             {/* Summary */}
             <div>
-              <Card className="sticky top-28">
+              <Card>
                 <CardContent className="p-6 space-y-4">
                   <h3 className="text-xl font-semibold">Order Summary</h3>
                   <div className="text-sm text-muted-foreground">
