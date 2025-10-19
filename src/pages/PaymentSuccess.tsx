@@ -1,87 +1,89 @@
-import { useEffect, useMemo, useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { motion } from "framer-motion";
-import { pageTransition } from "@/lib/motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import QRCode from "qrcode";
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
+import html2canvas from 'html2canvas';
+import { Button } from '@/components/ui/button';
 
-const PaymentSuccess = () => {
-  const search = window.location.search;
-  const params = new URLSearchParams(search);
-  const info = useMemo(() => ({
-    amount: Number(params.get("amount") || 0),
-    name: params.get("name") || "",
-    email: params.get("email") || "",
-    phone: params.get("phone") || "",
-    date: params.get("date") || "",
-    time: params.get("time") || "",
-    people: Number(params.get("people") || 0),
-    p1: Number(params.get("p1") || 0),
-    p2: Number(params.get("p2") || 0),
-    orderId: params.get("order_id") || "",
-    paymentId: params.get("payment_id") || "",
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [search]);
+export default function PaymentSuccess() {
+  const location = useLocation();
+  const [ticketData, setTicketData] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    amount: number;
+    qrCode: string;
+    token: string;
+  } | null>(null);
 
-  const [qr, setQr] = useState<string>("");
+  const ticketRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const payload = {
-      type: "RavoraEventsBooking",
-      name: info.name,
-      email: info.email,
-      phone: info.phone,
-      date: info.date,
-      time: info.time,
-      people: info.people,
-      split: { p1: info.p1, p2: info.p2 },
-      amount: info.amount,
-      orderId: info.orderId,
-      paymentId: info.paymentId,
-    };
-    QRCode.toDataURL(JSON.stringify(payload), { width: 256 })
-      .then(setQr)
-      .catch(() => setQr(""));
-  }, [info]);
+    // Expecting state passed from PaymentPage after verification
+    if (location.state) {
+      setTicketData(location.state);
+    } else {
+      // fallback: redirect or show message
+      console.warn('No ticket data found');
+    }
+  }, [location.state]);
+
+  const downloadTicket = async () => {
+    if (!ticketRef.current) return;
+    const canvas = await html2canvas(ticketRef.current, { scale: 2 });
+    const link = document.createElement('a');
+    link.download = `RavoraEventTicket_${ticketData?.token}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+
+  if (!ticketData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-white bg-black">
+        Loading ticket...
+      </div>
+    );
+  }
 
   return (
-    <motion.div {...pageTransition}>
+    <div className="min-h-screen bg-black text-white flex flex-col">
       <Navbar />
-      <main className="min-h-screen pt-28 pb-20 px-4">
-        <div className="container mx-auto max-w-2xl">
-          <Card>
-            <CardContent className="p-6 space-y-4">
-              <h1 className="text-2xl font-bold">Payment Successful 🎉</h1>
-              <p className="text-muted-foreground text-sm">
-                Your booking is confirmed.
-              </p>
-              <div className="flex items-center justify-between">
-                <span>Total Paid</span>
-                <span className="text-xl font-semibold">₹{info.amount}</span>
-              </div>
-              {qr && (
-                <div className="flex flex-col items-center gap-2 pt-2">
-                  <img src={qr} alt="Booking QR" className="h-64 w-64" />
-                  <p className="text-xs text-muted-foreground">Show this QR at the venue.</p>
-                </div>
-              )}
-              <div className="grid gap-2 text-sm">
-                <div>Order ID: {info.orderId || "—"}</div>
-                <div>Payment ID: {info.paymentId || "—"}</div>
-              </div>
-              <div className="flex gap-2 pt-2">
-                <Button onClick={() => window.print()} variant="secondary">Print</Button>
-                <Button onClick={() => (window.location.href = "/")}>Go to Home</Button>
-              </div>
-            </CardContent>
-          </Card>
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">
+        <h1 className="text-3xl font-bold mb-6">🎉 Payment Successful!</h1>
+        <p className="mb-4 text-center text-muted-foreground">
+          Your booking is confirmed. Show this ticket at the event entrance.
+        </p>
+
+        <div
+          ref={ticketRef}
+          className="bg-white text-black p-6 rounded-xl shadow-xl flex flex-col items-center w-full max-w-sm"
+        >
+          <h2 className="text-2xl font-bold mb-4 text-center">Ravora Events</h2>
+          <div className="mb-4 text-center">
+            <p><strong>Name:</strong> {ticketData.name}</p>
+            <p><strong>Email:</strong> {ticketData.email}</p>
+            <p><strong>Phone:</strong> {ticketData.phone}</p>
+            <p><strong>Amount Paid:</strong> ₹{ticketData.amount / 100}</p>
+          </div>
+          <div className="flex flex-col items-center">
+            <img
+              src={ticketData.qrCode}
+              alt="QR Code"
+              className="w-40 h-40 mb-4"
+            />
+            <p className="text-sm text-center">Booking Token: <strong>{ticketData.token}</strong></p>
+          </div>
+          <p className="mt-4 text-xs text-center text-muted-foreground">
+            Take a screenshot or download this ticket for entry.
+          </p>
         </div>
+
+        <Button onClick={downloadTicket} className="mt-6 bg-green-600 hover:bg-green-700">
+          Download Ticket
+        </Button>
       </main>
       <Footer />
-    </motion.div>
+    </div>
   );
-};
-
-export default PaymentSuccess;
+}

@@ -1,3 +1,4 @@
+"use client";
 import { useMemo, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -10,31 +11,30 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import NumberStepper from "@/components/NumberStepper";
+import { useNavigate } from "react-router-dom";
 
 type Split = { pkg1: number; pkg2: number };
-
 const clamp = (n: number, min = 0, max = Infinity) => Math.max(min, Math.min(max, n));
 
 const Book = () => {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [people, setPeople] = useState<number>(2);
-  const [split, setSplit] = useState<Split>({ pkg1: 2, pkg2: 0 });
+  const [split, setSplit] = useState<Split>({ pkg1: 1, pkg2: 1 });
   const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Ensure split sums to people
   const normalizedSplit = useMemo(() => {
-    const p1 = clamp(Math.round(split.pkg1));
-    let p2 = clamp(Math.round(split.pkg2));
-    const total = p1 + p2;
-    if (total !== people) {
-      // adjust pkg2 to match total people
-      p2 = clamp(people - p1, 0);
-    }
-    return { pkg1: p1, pkg2: p2 } as Split;
+    let p1 = clamp(Math.round(split.pkg1), 0, people);
+    let p2 = people - p1;
+    return { pkg1: p1, pkg2: p2 };
   }, [split, people]);
 
+  // Calculate total amount
   const totalAmount = useMemo(() => {
     const price1 = PACKAGE_OPTIONS[0].pricePerPerson * normalizedSplit.pkg1;
     const price2 = PACKAGE_OPTIONS[1].pricePerPerson * normalizedSplit.pkg2;
@@ -43,26 +43,58 @@ const Book = () => {
 
   const canSubmit = useMemo(() => {
     return (
-      name.trim() && email.trim() && phone.trim() && people > 0 &&
+      name.trim() &&
+      email.trim() &&
+      phone.trim() &&
+      people > 0 &&
       normalizedSplit.pkg1 + normalizedSplit.pkg2 === people
     );
   }, [name, email, phone, people, normalizedSplit]);
 
-  const handleProceedToPay = async () => {
-    // Placeholder Razorpay integration: create order on backend then open checkout
-    // Here we only navigate to a mock payment route with state or query params
-    const details = { name, email, phone, people, split: normalizedSplit, amount: totalAmount };
-    const params = new URLSearchParams({
-      name: details.name,
-      email: details.email,
-      phone: details.phone,
-      people: String(details.people),
-      p1: String(details.split.pkg1),
-      p2: String(details.split.pkg2),
-      amount: String(details.amount),
+  // ✅ Proceed button: send booking data to backend
+ // ✅ Proceed button: send booking data to backend
+const handleProceedToPay = async () => {
+  if (!canSubmit) return;
+  setLoading(true);
+
+  try {
+    // Build the body to match backend expectations
+    const body = {
+      name,
+      email,
+      phone,
+      totalPeople: people,
+      menuSelection: [
+        { menuType: PACKAGE_OPTIONS[0].name, quantity: normalizedSplit.pkg1 },
+        { menuType: PACKAGE_OPTIONS[1].name, quantity: normalizedSplit.pkg2 },
+      ],
+      amount: totalAmount * 100, // convert to paise (₹2500 → 250000)
+    };
+
+    // Call backend /api/create (localhost for now)
+    const res = await fetch("http://localhost:5000/api/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
     });
-    window.location.href = `/payment?${params.toString()}`;
-  };
+
+    if (!res.ok) throw new Error("Failed to create order");
+    const data = await res.json();
+
+    // Redirect to /payment page with order info
+    navigate(
+      `/payment?orderId=${data.order.id}&token=${data.token}&amount=${body.amount}&name=${encodeURIComponent(
+        name
+      )}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
+    );
+  } catch (err) {
+    console.error("Booking creation failed:", err);
+    alert("Something went wrong while creating your booking. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <motion.div {...pageTransition}>
@@ -78,7 +110,9 @@ const Book = () => {
             Book Now
           </motion.h1>
 
-          <p className="text-center text-muted-foreground mb-10">Choose packages for your group and share your details. We’ll direct you to secure payment.</p>
+          <p className="text-center text-muted-foreground mb-10">
+            Choose packages for your group and share your details. We’ll direct you to secure payment.
+          </p>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Form */}
@@ -88,23 +122,52 @@ const Book = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="name">Full Name</Label>
-                      <Input id="name" value={name} onChange={(e) => setName(e.target.value)} placeholder="John Doe" required />
+                      <Input
+                        id="name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="John Doe"
+                        required
+                      />
                     </div>
                     <div>
                       <Label htmlFor="phone">Phone</Label>
-                      <Input id="phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 9XXXXXXXXX" required />
+                      <Input
+                        id="phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="+91 9XXXXXXXXX"
+                        required
+                      />
                     </div>
                     <div>
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="john@example.com" required />
+                      <Input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="john@example.com"
+                        required
+                      />
                     </div>
-                    {/* Date & Time removed per request */}
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                     <div>
                       <Label htmlFor="people">Total People</Label>
-                      <NumberStepper id="people" value={people} min={1} onChange={(v) => setPeople(clamp(v, 1))} />
+                      <NumberStepper
+                        id="people"
+                        value={people}
+                        min={1}
+                        onChange={(v) => {
+                          const newPeople = clamp(v, 1);
+                          setPeople(newPeople);
+                          const ratio = normalizedSplit.pkg1 / (normalizedSplit.pkg1 + normalizedSplit.pkg2 || 1);
+                          const newPkg1 = Math.round(ratio * newPeople);
+                          setSplit({ pkg1: newPkg1, pkg2: newPeople - newPkg1 });
+                        }}
+                      />
                     </div>
                     <div>
                       <Label htmlFor="pkg1">{PACKAGE_OPTIONS[0].name.split(" — ")[0]}</Label>
@@ -112,8 +175,8 @@ const Book = () => {
                         id="pkg1"
                         value={normalizedSplit.pkg1}
                         min={0}
-                        max={people - normalizedSplit.pkg2}
-                        onChange={(v) => setSplit((s) => ({ ...s, pkg1: clamp(v, 0) }))}
+                        max={people}
+                        onChange={(v) => setSplit({ pkg1: clamp(v, 0, people), pkg2: people - clamp(v, 0, people) })}
                       />
                     </div>
                     <div>
@@ -122,16 +185,21 @@ const Book = () => {
                         id="pkg2"
                         value={normalizedSplit.pkg2}
                         min={0}
-                        max={people - normalizedSplit.pkg1}
-                        onChange={(v) => setSplit((s) => ({ ...s, pkg2: clamp(v, 0) }))}
+                        max={people}
+                        onChange={(v) => setSplit({ pkg1: people - clamp(v, 0, people), pkg2: clamp(v, 0, people) })}
                       />
                     </div>
                   </div>
-                  <p className="text-xs text-muted-foreground -mt-2">Remaining: {Math.max(people - (normalizedSplit.pkg1 + normalizedSplit.pkg2), 0)}</p>
 
                   <div>
                     <Label htmlFor="notes">Notes (optional)</Label>
-                    <Textarea id="notes" rows={4} value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Occasion, preferences, allergies, etc." />
+                    <Textarea
+                      id="notes"
+                      rows={4}
+                      value={notes}
+                      onChange={(e) => setNotes(e.target.value)}
+                      placeholder="Occasion, preferences, allergies, etc."
+                    />
                   </div>
                 </CardContent>
               </Card>
@@ -142,26 +210,24 @@ const Book = () => {
               <Card className="sticky top-28">
                 <CardContent className="p-6 space-y-4">
                   <h3 className="text-xl font-semibold">Order Summary</h3>
-                  <div className="text-sm text-muted-foreground">Contact: {name || "—"} · {phone || "—"}</div>
+                  <div className="text-sm text-muted-foreground">
+                    Contact: {name || "—"} · {phone || "—"}
+                  </div>
 
                   <div className="border border-border rounded-md divide-y divide-border overflow-hidden">
-                    {/* Line Item: Non‑Alcohol */}
-                    <div className="flex items-start justify-between p-4">
-                      <div>
-                        <div className="font-medium">{PACKAGE_OPTIONS[0].name.split(" — ")[0]}</div>
-                        <div className="text-xs text-muted-foreground">₹{PACKAGE_OPTIONS[0].pricePerPerson} × {normalizedSplit.pkg1}</div>
+                    {PACKAGE_OPTIONS.map((pkg, idx) => (
+                      <div key={idx} className="flex items-start justify-between p-4">
+                        <div>
+                          <div className="font-medium">{pkg.name.split(" — ")[0]}</div>
+                          <div className="text-xs text-muted-foreground">
+                            ₹{pkg.pricePerPerson} × {idx === 0 ? normalizedSplit.pkg1 : normalizedSplit.pkg2}
+                          </div>
+                        </div>
+                        <div className="font-semibold">
+                          ₹{pkg.pricePerPerson * (idx === 0 ? normalizedSplit.pkg1 : normalizedSplit.pkg2)}
+                        </div>
                       </div>
-                      <div className="font-semibold">₹{PACKAGE_OPTIONS[0].pricePerPerson * normalizedSplit.pkg1}</div>
-                    </div>
-                    {/* Line Item: Alcohol */}
-                    <div className="flex items-start justify-between p-4">
-                      <div>
-                        <div className="font-medium">{PACKAGE_OPTIONS[1].name.split(" — ")[0]}</div>
-                        <div className="text-xs text-muted-foreground">₹{PACKAGE_OPTIONS[1].pricePerPerson} × {normalizedSplit.pkg2}</div>
-                      </div>
-                      <div className="font-semibold">₹{PACKAGE_OPTIONS[1].pricePerPerson * normalizedSplit.pkg2}</div>
-                    </div>
-                    {/* Subtotal / Total */}
+                    ))}
                     <div className="flex items-center justify-between p-4 bg-muted/20">
                       <div className="text-sm">Subtotal</div>
                       <div className="font-medium">₹{totalAmount}</div>
@@ -173,10 +239,12 @@ const Book = () => {
                     <span>₹{totalAmount}</span>
                   </div>
 
-                  <Button className="w-full" disabled={!canSubmit} onClick={handleProceedToPay}>
-                    Proceed to Payment
+                  <Button className="w-full" disabled={!canSubmit || loading} onClick={handleProceedToPay}>
+                    {loading ? "Processing..." : "Proceed to Payment"}
                   </Button>
-                  <p className="text-xs text-muted-foreground">Unlimited packages. Taxes may apply as per venue policy.</p>
+                  <p className="text-xs text-muted-foreground">
+                    Unlimited packages. Taxes may apply as per venue policy.
+                  </p>
                 </CardContent>
               </Card>
             </div>
