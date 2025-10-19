@@ -22,7 +22,7 @@ const EventCard = ({ event, index }: EventCardProps) => {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
-      className="flex-shrink-0 w-80 sm:w-96 glass rounded-2xl overflow-hidden group hover:glow-pink transition-all duration-300"
+      className="flex-shrink-0 w-72 sm:w-80 md:w-96 glass rounded-2xl overflow-hidden group hover:glow-pink hover-tilt"
     >
       <div className="relative h-64 overflow-hidden">
         <img
@@ -57,7 +57,7 @@ const EventCard = ({ event, index }: EventCardProps) => {
 
         <a
           href="#book-now"
-          className="block w-full py-3 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-center glow-pink hover:scale-105 transition-transform"
+          className="block w-full py-3 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-center glow-pink hover:scale-105 transition-transform animate-glow-pulse"
         >
           Book Now
         </a>

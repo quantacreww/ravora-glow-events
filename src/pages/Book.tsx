@@ -71,7 +71,7 @@ const Book = () => {
         amount: totalAmount * 100, // convert to paise (₹2500 → 250000)
       };
 
-      const res = await fetch("http://localhost:5000/api/create", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/create`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

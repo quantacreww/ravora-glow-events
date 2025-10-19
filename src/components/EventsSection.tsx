@@ -24,7 +24,7 @@ const EventsSection = () => {
           </p>
         </motion.div>
 
-        <div className="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] justify-center">
+        <div className="flex flex-wrap xs:flex-nowrap overflow-x-auto gap-6 pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] justify-center">
           {eventsData.map((event, index) => (
             <EventCard key={event.id} event={event} index={index} />
           ))}
