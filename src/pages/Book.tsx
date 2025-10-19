@@ -54,49 +54,45 @@ const Book = () => {
   }, [name, email, phone, date, time, people, normalizedSplit]);
 
   // ✅ Proceed button: send booking data to backend
- // ✅ Proceed button: send booking data to backend
-const handleProceedToPay = async () => {
-  if (!canSubmit) return;
-  setLoading(true);
+  const handleProceedToPay = async () => {
+    if (!canSubmit) return;
+    setLoading(true);
 
-  try {
-    // Build the body to match backend expectations
-    const body = {
-      name,
-      email,
-      phone,
-      totalPeople: people,
-      menuSelection: [
-        { menuType: PACKAGE_OPTIONS[0].name, quantity: normalizedSplit.pkg1 },
-        { menuType: PACKAGE_OPTIONS[1].name, quantity: normalizedSplit.pkg2 },
-      ],
-      amount: totalAmount * 100, // convert to paise (₹2500 → 250000)
-    };
+    try {
+      const body = {
+        name,
+        email,
+        phone,
+        totalPeople: people,
+        menuSelection: [
+          { menuType: PACKAGE_OPTIONS[0].name, quantity: normalizedSplit.pkg1 },
+          { menuType: PACKAGE_OPTIONS[1].name, quantity: normalizedSplit.pkg2 },
+        ],
+        amount: totalAmount * 100, // convert to paise (₹2500 → 250000)
+      };
 
-    // Call backend /api/create (localhost for now)
-    const res = await fetch("http://localhost:5000/api/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
+      const res = await fetch("http://localhost:5000/api/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
 
-    if (!res.ok) throw new Error("Failed to create order");
-    const data = await res.json();
+      if (!res.ok) throw new Error("Failed to create order");
+      const data = await res.json();
 
-    // Redirect to /payment page with order info
-    navigate(
-      `/payment?orderId=${data.order.id}&token=${data.token}&amount=${body.amount}&name=${encodeURIComponent(
-        name
-      )}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
-    );
-  } catch (err) {
-    console.error("Booking creation failed:", err);
-    alert("Something went wrong while creating your booking. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
-
+      // Navigate to payment page with query parameters
+      navigate(
+        `/payment?orderId=${data.order.id}&token=${data.token}&amount=${body.amount}&name=${encodeURIComponent(
+          name
+        )}&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
+      );
+    } catch (err) {
+      console.error("Booking creation failed:", err);
+      alert("Something went wrong while creating your booking. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <motion.div {...pageTransition}>
@@ -179,9 +175,10 @@ const handleProceedToPay = async () => {
                         min={0}
                         max={people}
                         value={normalizedSplit.pkg1}
-                        min={0}
-                        max={people}
-                        onChange={(v) => setSplit({ pkg1: clamp(v, 0, people), pkg2: people - clamp(v, 0, people) })}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          setSplit({ pkg1: clamp(value, 0, people), pkg2: people - clamp(value, 0, people) });
+                        }}
                       />
                     </div>
                     <div>
@@ -192,9 +189,10 @@ const handleProceedToPay = async () => {
                         min={0}
                         max={people}
                         value={normalizedSplit.pkg2}
-                        min={0}
-                        max={people}
-                        onChange={(v) => setSplit({ pkg1: people - clamp(v, 0, people), pkg2: clamp(v, 0, people) })}
+                        onChange={(e) => {
+                          const value = Number(e.target.value);
+                          setSplit({ pkg1: people - clamp(value, 0, people), pkg2: clamp(value, 0, people) });
+                        }}
                       />
                     </div>
                   </div>
