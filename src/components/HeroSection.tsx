@@ -19,7 +19,7 @@ const HeroSection = () => {
         <motion.img
           src={logo}
           alt="Ravora Logo"
-          className="w-64 h-64 mx-auto mb-8 animate-float"
+          className="w-40 h-40 sm:w-56 sm:h-56 md:w-64 md:h-64 mx-auto mb-8 animate-float"
           {...fadeInScale}
           transition={{ duration: 0.8 }}
         />

@@ -109,9 +109,9 @@ const TicketPage = () => {
                                     )}
                                     <div className="pt-2 flex flex-col items-center gap-2">
                                         {ticket.qrImageUrl ? (
-                                            <img src={ticket.qrImageUrl} alt="Ticket QR" className="h-64 w-64" />
+                                            <img src={ticket.qrImageUrl} alt="Ticket QR" className="w-full max-w-[16rem] aspect-square object-contain" />
                                         ) : (
-                                            <div className="h-64 w-64 grid place-items-center border rounded-md text-sm text-muted-foreground">
+                                            <div className="w-full max-w-[16rem] aspect-square grid place-items-center border rounded-md text-sm text-muted-foreground">
                                                 QR unavailable
                                             </div>
                                         )}
