@@ -22,13 +22,13 @@ const EventCard = ({ event, index }: EventCardProps) => {
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.2 }}
-      className="flex-shrink-0 w-72 sm:w-80 md:w-96 glass rounded-2xl overflow-hidden group hover:glow-pink hover-tilt"
+  className="flex-shrink-0 w-72 sm:w-80 md:w-96 max-w-[100vw] glass rounded-2xl overflow-hidden group hover:glow-pink hover-tilt"
     >
       <div className="relative h-64 overflow-hidden">
         <img
           src={getImage(event.image)}
           alt={event.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
       </div>

@@ -8,8 +8,8 @@ const EventsSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="events" ref={ref} className="py-20 px-4 sm:px-6 lg:px-8">
-      <div className="container mx-auto">
+    <section id="events" ref={ref} className="py-20 px-4 sm:px-6 lg:px-8 w-full max-w-[100vw] overflow-x-hidden">
+      <div className="container mx-auto w-full max-w-[100vw]">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -24,7 +24,7 @@ const EventsSection = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-wrap xs:flex-nowrap overflow-x-auto gap-6 pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] justify-center">
+        <div className="flex flex-wrap xs:flex-nowrap overflow-x-auto gap-6 pb-8 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] justify-center w-full max-w-[100vw]">
           {eventsData.map((event, index) => (
             <EventCard key={event.id} event={event} index={index} />
           ))}

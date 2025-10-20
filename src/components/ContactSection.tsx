@@ -9,7 +9,7 @@ const ContactSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section id="book-now" ref={ref} className="py-20 px-4 sm:px-6 lg:px-8">
+  <section id="book-now" ref={ref} className="py-20 px-4 sm:px-6 lg:px-8 w-full max-w-[100vw] overflow-x-hidden">
       <div className="container mx-auto max-w-4xl text-center">
         <motion.div
           initial={{ opacity: 0, y: 50 }}

@@ -25,9 +25,9 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section className="relative my-16">
+  <section className="relative my-16 w-full max-w-[100vw] overflow-x-hidden">
       {/* subtle brand glow */}
-      <div className="pointer-events-none absolute inset-0 opacity-20">
+  <div className="pointer-events-none absolute inset-0 opacity-20 contain-transforms">
         <div className="absolute -top-20 -left-10 w-72 h-72 rounded-full bg-primary blur-3xl" />
         <div className="absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-accent blur-3xl" />
       </div>

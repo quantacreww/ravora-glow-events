@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <motion.div {...pageTransition}>
+    <motion.div {...pageTransition} className="w-full max-w-[100vw] overflow-x-hidden">
       <Navbar />
       <HeroSection />
       <AboutSection />

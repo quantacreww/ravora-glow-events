@@ -19,8 +19,8 @@ const categories = [
 
 export default function CategoriesSection() {
     return (
-        <section className="relative my-16 px-4">
-            <div className="pointer-events-none absolute inset-0 opacity-30">
+    <section className="relative my-16 px-4 w-full max-w-[100vw] overflow-x-hidden">
+            <div className="pointer-events-none absolute inset-0 opacity-30 contain-transforms">
                 <div className="absolute -top-20 -left-10 w-72 h-72 rounded-full bg-primary blur-3xl" />
                 <div className="absolute -bottom-16 -right-10 w-80 h-80 rounded-full bg-accent blur-3xl" />
             </div>

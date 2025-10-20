@@ -26,11 +26,14 @@ const Navbar = () => {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "glass glow-pink" : "bg-transparent"
-        }`}
+      role="navigation"
+      aria-label="Main"
+      className={`fixed top-0 left-0 right-0 z-50 w-screen max-w-[100vw] overflow-x-hidden box-border transition-all duration-300 ${
+        isScrolled ? "glass glow-pink" : "bg-transparent"
+      }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="w-full max-w-[100vw] mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden box-border">
+        <div className="flex items-center justify-between h-20 w-full">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img src={logo} alt="Ravora Events Logo" className="h-12 w-12 animate-glow-pulse" />
@@ -43,10 +46,9 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`text-lg font-medium transition-all duration-300 hover:text-primary ${location.pathname === link.path
-                    ? "text-primary text-glow-pink"
-                    : "text-foreground"
-                  }`}
+                className={`text-lg font-medium transition-all duration-300 hover:text-primary ${
+                  location.pathname === link.path ? "text-primary text-glow-pink" : "text-foreground"
+                }`}
               >
                 {link.name}
               </Link>
@@ -74,7 +76,7 @@ const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden pb-4"
+            className="md:hidden pb-4 w-full max-w-[100vw] overflow-x-hidden box-border"
           >
             {navLinks.map((link) => (
               <Link

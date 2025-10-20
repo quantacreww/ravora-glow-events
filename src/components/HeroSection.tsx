@@ -5,7 +5,7 @@ import logo from "@/assets/logo.jpg";
 
 const HeroSection = () => {
   return (
-    <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
+  <section className="relative h-screen w-full max-w-[100vw] overflow-x-hidden overflow-y-hidden flex items-center justify-center contain-transforms">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center"
