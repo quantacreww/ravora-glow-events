@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Instagram, MessageCircle } from "lucide-react";
+import { Instagram } from "lucide-react";
+import whatsappIcon from "@/assets/whatsapp-svgrepo-com.svg";
 
 const ContactSection = () => {
   const ref = useRef(null);
@@ -28,7 +29,7 @@ const ContactSection = () => {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full text-white font-semibold glow-pink"
+              className="inline-flex items-center justify-center gap-3 h-12 px-8 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full text-white font-semibold glow-pink"
             >
               <Instagram size={24} />
               <span>Follow on Instagram</span>
@@ -39,9 +40,9 @@ const ContactSection = () => {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}
-              className="flex items-center space-x-3 px-8 py-4 bg-gradient-to-r from-green-500 to-teal-500 rounded-full text-white font-semibold glow-blue"
+              className="inline-flex items-center justify-center gap-3 h-12 px-8 bg-gradient-to-r from-green-500 to-teal-500 rounded-full text-white font-semibold glow-blue"
             >
-              <MessageCircle size={24} />
+              <img src={whatsappIcon} alt="WhatsApp" className="h-6 w-6 filter brightness-0 invert" />
               <span>WhatsApp Us</span>
             </motion.a>
           </div>
@@ -49,7 +50,7 @@ const ContactSection = () => {
           <motion.a
             href="/book"
             whileHover={{ scale: 1.05 }}
-            className="px-12 py-5 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-xl glow-pink inline-flex items-center justify-center"
+            className="inline-flex items-center justify-center h-12 px-8 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-base glow-pink"
           >
             🎉 Book Your Spot Now 🎉
           </motion.a>

@@ -57,7 +57,7 @@ const EventCard = ({ event, index }: EventCardProps) => {
 
         <a
           href="#book-now"
-          className="block w-full py-3 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-center glow-pink hover:scale-105 transition-transform animate-glow-pulse"
+          className="inline-flex w-full items-center justify-center h-12 px-6 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-center glow-pink hover:scale-105 transition-transform animate-glow-pulse"
         >
           Book Now
         </a>

@@ -1,4 +1,5 @@
-import { Instagram, MessageCircle, MapPin } from "lucide-react";
+import { Instagram, MapPin } from "lucide-react";
+import whatsappIcon from "@/assets/whatsapp-svgrepo-com.svg";
 import { motion } from "framer-motion";
 
 const Footer = () => {
@@ -43,7 +44,7 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Connect With Us</h4>
             <div className="flex space-x-4 mb-4">
               <motion.a
-                href="https://instagram.com"
+                href="https://instagram.com/ravora_events"
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.1 }}
@@ -58,7 +59,7 @@ const Footer = () => {
                 whileHover={{ scale: 1.1 }}
                 className="p-3 rounded-full bg-gradient-to-r from-secondary to-primary glow-blue"
               >
-                <MessageCircle size={24} />
+                <img src={whatsappIcon} alt="WhatsApp" className="h-6 w-6 filter brightness-0 invert" />
               </motion.a>
             </div>
             <div className="flex items-start space-x-2 text-muted-foreground">

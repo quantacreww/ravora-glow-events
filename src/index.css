@@ -170,4 +170,15 @@ All colors MUST be HSL.
     transform: translateY(-4px) rotate(-0.5deg);
     box-shadow: var(--glow-pink);
   }
+
+  /* Unified button sizing for landing page */
+  .btn-unified {
+    @apply inline-flex items-center justify-center h-12 px-8 rounded-full font-semibold;
+  }
+  .btn-wide {
+    @apply min-w-56;
+  }
+  .btn-icon {
+    @apply h-5 w-5;
+  }
 }

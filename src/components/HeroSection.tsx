@@ -59,7 +59,7 @@ const HeroSection = () => {
         >
           <a
             href="#events"
-            className="px-8 py-4 bg-gradient-to-r from-primary to-accent rounded-full text-white font-bold text-lg glow-pink animate-glow-pulse hover:scale-105 transition-transform inline-block"
+            className="inline-flex items-center justify-center h-12 px-8 bg-gradient-to-r from-primary to-accent rounded-full text-white font-semibold text-base glow-pink animate-glow-pulse hover:scale-105 transition-transform"
           >
             Explore Events
           </a>
