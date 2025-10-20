@@ -36,7 +36,7 @@ const ContactSection = () => {
             </motion.a>
 
             <motion.a
-              href="https://wa.me/9618414997"
+              href="https://wa.me/+919618414997"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05 }}

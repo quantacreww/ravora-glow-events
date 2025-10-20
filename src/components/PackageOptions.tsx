@@ -1,10 +1,9 @@
 import { PACKAGE_OPTIONS } from "@/lib/packages";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import imgEvent1 from "@/assets/events/event-1.jpg";
-import imgEvent2 from "@/assets/events/event-2.jpg";
-
-const pkgImages = [imgEvent1, imgEvent2];
+import nonalc from "@/assets/menu/nonalc.jpg";
+import alc from "@/assets/menu/alc.jpg";
+const pkgImages = [nonalc, alc];
 
 const PackageOptions = () => {
   return (
